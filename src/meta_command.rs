@@ -21,11 +21,13 @@ mod tests {
     fn test_do_meta_command() {
         let command_type_pairs = vec![
             (".exit", MetaCommandType::Exit),
-            ("", MetaCommandType::UnrecognizedCommand),
         ];
 
         for (command, result) in command_type_pairs {
-            assert_eq!(result, do_meta_command(&command));
+            assert_eq!(result, do_meta_command(&command).unwrap());
         }
+
+        do_meta_command(&"")
+            .expect_err("Failed to fail to execute unrecognized meta-command");
     }
 }
