@@ -6,6 +6,7 @@ pub enum MetaCommandType {
     Exit,
 }
 
+/// Execute a meta command
 pub fn do_meta_command(input_line: &&str) -> anyhow::Result<MetaCommandType> {
     match *input_line {
         ".exit" => Ok(MetaCommandType::Exit),
@@ -15,7 +16,7 @@ pub fn do_meta_command(input_line: &&str) -> anyhow::Result<MetaCommandType> {
 
 #[cfg(test)]
 mod tests {
-    use crate::meta_command::{do_meta_command, MetaCommandType};
+    use super::*;
 
     #[test]
     fn test_do_meta_command() {
