@@ -49,7 +49,7 @@ impl TryFrom<&&str> for Statement {
                         email: email.to_string(),
                     }
                 )
-            },
+            }
             unrecognized_command =>
                 return Err(anyhow!("unrecognized statement type: '{}'", unrecognized_command)),
         };
@@ -87,13 +87,13 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_str_to_statement() {
+    fn test_convert_valid_commands() {
         let statement_type_pairs = vec![
             ("select", StatementType::Select),
             ("insert 1 user user@mail.com", StatementType::Insert(Row {
                 id: 1,
                 name: "user".to_string(),
-                email: "user@mail.com".to_string()
+                email: "user@mail.com".to_string(),
             })),
         ];
 
@@ -101,7 +101,13 @@ mod tests {
             assert_eq!(statement_type,
                        Statement::try_from(&statement_str).unwrap().statement_type)
         }
+    }
 
-        Statement::try_from(&"").expect_err("Unexpected successful conversion");
+    #[test]
+    fn test_invalid_commands() {
+        for invalid_cmd in ["", "not_command", "insert", "insert 1", "insert 1 user"] {
+            Statement::try_from(&invalid_cmd)
+                .expect_err("Unexpected successful conversion");
+        }
     }
 }

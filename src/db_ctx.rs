@@ -13,10 +13,12 @@ impl DBContext {
         }
     }
 
+    /// Insert a row into the DB's single table
     pub fn insert_row(&mut self, row: Row) {
         self.rows.push(row);
     }
 
+    /// Print all rows to an output stream
     pub fn list_rows(&self, out_stream: &mut impl Write) {
         for row in &self.rows {
             writeln!(out_stream, "{}", row).expect("Write failure");
